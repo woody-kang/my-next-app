@@ -28,6 +28,4 @@ jobs:
       if: ${{ failure() }}
       run: |
         echo "::set-output name=status::failure"
-      else:
-        echo "::set-output name=status::success"
 
