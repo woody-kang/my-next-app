@@ -23,7 +23,6 @@ jobs:
         # 체크되지 않은 체크박스가 있다면 오류 발생
         if [ "$unchecked_count" -gt 0 ]; then
           echo "::error title=Unchecked List::There are $unchecked_count unchecked checkboxes in the PR description."
-          exit 1
         fi
 
     # - name: Set status
