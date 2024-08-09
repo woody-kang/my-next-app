@@ -18,18 +18,18 @@ jobs:
         # 체크되지 않은 체크박스 검색
         unchecked_count=$(echo "$pr_body" | grep -o '\- \[ \]' | wc -l)
 
-        echo "UNCHECKED_COUNT=$unchecked_count" >> "$GITHUB_OUTPUT"
+        # echo "UNCHECKED_COUNT=$unchecked_count" >> "$GITHUB_OUTPUT"
 
         # 체크되지 않은 체크박스가 있다면 오류 발생
         if [ "$unchecked_count" -gt 0 ]; then
-          echo "There are $unchecked_count unchecked checkboxes in the PR description."
+          echo "::error title=Unchecked List::There are $unchecked_count unchecked checkboxes in the PR description."
           exit 1
         fi
 
-    - name: Set status
-      env:
-        UNCHECKED_COUNT: ${{ steps.checkboxes.outputs.UNCHECKED_COUNT }}
-      if: ${{ failure() }}
-      run: |
-        echo "아직 확인되지 않은 Checklist 가 $UNCHECKED_COUNT 개 있습니다." >> $GITHUB_STEP_SUMMARY
+    # - name: Set status
+    #   env:
+    #     UNCHECKED_COUNT: ${{ steps.checkboxes.outputs.UNCHECKED_COUNT }}
+    #   if: ${{ failure() }}
+    #   run: |
+    #     echo "아직 확인되지 않은 Checklist 가 $UNCHECKED_COUNT 개 있습니다." >> $GITHUB_STEP_SUMMARY"
 
