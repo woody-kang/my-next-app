@@ -18,6 +18,7 @@ jobs:
         # 체크되지 않은 체크박스 검색
         unchecked_count=$(echo "$pr_body" | grep -o '\- \[ \]' | wc -l)
 
+        echo "unchecked_count: $unchecked_count"
         # 체크되지 않은 체크박스가 있다면 오류 발생
         if [ "$unchecked_count" -gt 0 ]; then
           echo "There are $unchecked_count unchecked checkboxes in the PR description."
@@ -28,6 +29,4 @@ jobs:
       if: ${{ failure() }}
       run: |
         echo "::set-output name=status::failure"
-      else:
-        echo "::set-output name=status::success"
 
