@@ -1,0 +1,33 @@
+name: PR Checklist Validation
+
+on:
+  pull_request:
+    types: [opened, edited]
+
+jobs:
+  check-pr-description:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check PR Description for Unchecked Checkboxes
+      id: checkboxes
+      run: |
+        # PR 설명 가져오기
+        pr_body=$(jq -r .pull_request.body < "$GITHUB_EVENT_PATH")
+
+        # 체크되지 않은 체크박스 검색
+        unchecked_count=$(echo "$pr_body" | grep -o '\- \[ \]' | wc -l)
+
+        # 체크되지 않은 체크박스가 있다면 오류 발생
+        if [ "$unchecked_count" -gt 0 ]; then
+          echo "There are $unchecked_count unchecked checkboxes in the PR description."
+          exit 1
+        fi
+
+    - name: Set status
+      if: ${{ failure() }}
+      run: |
+        echo "::set-output name=status::failure"
+      else:
+        echo "::set-output name=status::success"
+
